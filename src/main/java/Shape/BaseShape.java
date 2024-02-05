@@ -26,7 +26,7 @@ public class  BaseShape extends Transform implements Cloneable {
      * @param coords The collection of 2D points
      */
     public BaseShape(Collection<Point2d> coords) {
-        this.coords = new ArrayList<>(coords);
+        this.coords = cloneCoords(coords);
     }
 
     /** TODO
@@ -35,7 +35,7 @@ public class  BaseShape extends Transform implements Cloneable {
      * @return Updated BaseShape
      */
     public BaseShape add(Point2d coord) {
-        this.coords.add(coord);
+        this.coords.add(coord.clone());
         return this;
     }
 
@@ -56,7 +56,10 @@ public class  BaseShape extends Transform implements Cloneable {
      * @return Updated BaseShape
      */
     public BaseShape addAll(Collection<Point2d> coords) {
-        this.coords.addAll(coords);
+
+        for(Point2d coord : coords){
+            this.coords.add(coord.clone());
+        }
         return this;
     }
 
@@ -97,7 +100,11 @@ public class  BaseShape extends Transform implements Cloneable {
      * @param newCoords new coords to replace the old one
      * @return Updated BaseShape
      * */
-    public BaseShape replaceAll(Collection<Point2d> newCoords) { return null; }
+    public BaseShape replaceAll(Collection<Point2d> newCoords) {
+        this.coords.clear();
+        this.coords.addAll(newCoords);
+        return this;
+    }
 
     /** TODO
      * Return a shallow copy of the coordinates of the shape
@@ -113,55 +120,87 @@ public class  BaseShape extends Transform implements Cloneable {
      * @return Deep copy of all coordinates contained by this BaseShape
      */
     public Collection<Point2d> cloneCoords() {
-        return null;
+       Collection<Point2d> clonedCoords = new ArrayList<>();
+        for(Point2d coord : coords){
+            clonedCoords.add(coord.clone());
+        }
+        return clonedCoords;
     }
 
     /** TODO
      * @return Maximum X coordinate of the shape
      */
     public Double getMaxX() {
-        return null;
+        double maxX = - Double.MAX_VALUE;
+        for(Point2d coord : coords){
+            if(coord.X() > maxX){
+                maxX = coord.X();
+            }
+        }
+        return maxX;
     }
 
     /** TODO
      * @return Maximum Y coordinate of the shape
      */
     public Double getMaxY() {
-        return null;
+
+        double maxY = - Double.MAX_VALUE;
+        for(Point2d coord : coords){
+            if(coord.Y() > maxY){
+                maxY = coord.Y();
+            }
+
+        }
+        return maxY;
     }
 
     /** TODO
      * @return 2D Point containing the maximum X and Y coordinates of the shape
      */
     public Point2d getMaxCoord() {
-        return null;
+        return new Point2d(getMaxX(), getMaxY());
     }
 
     /** TODO
      * @return Minimum X coordinate of the shape
      */
     public Double getMinX() {
-        return null;
+        double minX = Double.MAX_VALUE;
+         for(Point2d coord : coords) {
+             if (coord.X() < minX) {
+                 minX = coord.X();
+             }
+         }
+        return minX;
     }
 
     /** TODO
      * @return Minimum Y coordinate of the shape
      */
     public Double getMinY() {
-        return null;
+        double minY = Double.MAX_VALUE;
+        for(Point2d coord : coords){
+            if(coord.Y() < minY){
+                minY = coord.Y();
+
+            }
+        }
+        return minY;
     }
 
     /** TODO
      * @return 2D point containing the minimum X and Y coordinate of the shape
      */
     public Point2d getMinCoord() {
-        return null;
+        return new Point2d(getMinX(), getMinY());
     }
 
     /** TODO
      * @return Deep copy of the current shape
      */
     public BaseShape clone() {
-        return null;
+        BaseShape clonedShape = new BaseShape(cloneCoords());
+        return clonedShape;
     }
 }

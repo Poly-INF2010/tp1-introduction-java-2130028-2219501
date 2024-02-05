@@ -24,7 +24,15 @@ public class Rectangle extends BaseShape {
      * @param dimensions 2D point containing the width and height of the rectangle
      */
     public Rectangle(Point2d dimensions) {
-        this.add(dimensions);
+
+        super();
+        double width = dimensions.X();
+        double height = dimensions.Y();
+        for(double i = -width/2; i < width/2; i+=0.5){
+            for(double j = - height/2; j < height/2; j+=0.5){
+                add(new Point2d(i, j));
+            }
+        }
     }
 
     /**
